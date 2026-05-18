@@ -3,6 +3,7 @@
 
 Course: HEIG-VD CLD 2025/26  
 Authors: Koray Akgül , Nathan Stampfli 
+
 Topic: Amazon OpenSearch Service / Elasticsearch  
 Use case: Centralized log search and analysis for a Swiss SME
 
