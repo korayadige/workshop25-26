@@ -86,4 +86,4 @@ demo/queries.md: useful OpenSearch queries
 cost/cost-estimation.md: monthly cost scenario
 slides/presentation-plan.md: structure for the oral presentation
 
->>>>>>> 7bc7a68 (update conf)
+
