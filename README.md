@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # workshop25-26
 Context You are employed by a Swiss small/medium business making heavy use of information technology.
 =======
@@ -50,9 +50,9 @@ Amazon OpenSearch Service solves this problem by indexing logs and making them s
 │   └── presentation-plan.md
 └── cost/
     └── cost-estimation.md
+```
 
-
-Main concepts
+## Main concepts
 
 The workshop covers the following concepts:
 
@@ -73,7 +73,7 @@ cost structure
 vendor lock-in
 Demo idea
 
-The demo shows a small log analysis scenario:
+## The demo shows a small log analysis scenario:
 
 Start OpenSearch and OpenSearch Dashboards.
 Insert sample log documents.
@@ -88,4 +88,5 @@ demo/sample-logs.json: example log documents
 demo/queries.md: useful OpenSearch queries
 cost/cost-estimation.md: monthly cost scenario
 slides/presentation-plan.md: structure for the oral presentation
+
 >>>>>>> 7bc7a68 (update conf)
