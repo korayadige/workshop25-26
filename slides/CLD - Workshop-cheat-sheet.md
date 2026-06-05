@@ -100,7 +100,7 @@ For a local development environment:
 
 ```bash
 docker compose up -d
-curl -k -u "admin:Admin@CLD2026!" https://localhost:9200
+curl http://localhost:9200
 ```
 
 ### Hello-world usage example
