@@ -2,6 +2,7 @@
 # CLD Workshop – Amazon OpenSearch Service
 
 Course: HEIG-VD CLD 2025/26  
+
 Authors: Koray Akgul, Nathan Stampfli, Zweifel Abram, Victor Giordnai
 
 Topic: Amazon OpenSearch Service / Elasticsearch  
