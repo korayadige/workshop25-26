@@ -1,34 +1,19 @@
 # Amazon OpenSearch Service cheat sheet
 
 Course: HEIG-VD CLD 2025/26  
-
-Authors: Koray Akgul, Nathan Stampfli, Zweifel Abram, Victor Giordnai
-
+Authors: Koray Akgul, Nathan Stampfli, Zweifel Abram, Victor Giordnai  
 Date: June 7, 2026
 
 ## Why Amazon OpenSearch Service?
 
-Amazon OpenSearch Service is useful for a Swiss SME that needs to centralize, search and analyze logs from several applications and servers.
+Amazon OpenSearch Service is highly useful for a Swiss SME that needs to centralize, search, and analyze logs from several applications and servers in real time.
 
-In this example, a small e-commerce company running a web application on AWS may have logs distributed across EC2 instances, load balancers and application services. Without a centralized log search system, troubleshooting HTTP 500 errors, slow requests or suspicious activity is difficult.
+In our scenario, a small e-commerce company running a web application on AWS has logs distributed across multiple EC2 instances, load balancers, and internal application services. Without a centralized log search system, troubleshooting critical production errors — such as HTTP 500 internal errors, slow database requests, or suspicious security activity — is extremely slow and difficult because engineers must manually log into individual servers to inspect text files.
 
-OpenSearch indexes these logs and makes them searchable. It also provides dashboards and aggregations to analyze errors, traffic and application behavior.
+OpenSearch solves this problem by collecting, parsing, and indexing these logs automatically, making them instantly searchable through an API or a visual interface. It provides dashboards and powerful aggregations to analyze system errors, traffic spikes, and application behavior at a glance.
 
-### Typical inputs
-
-- Application logs
-- Web server logs
-- Security logs
-- JSON documents
-- CloudWatch logs
-
-### Typical outputs
-
-- Search results
-- Dashboards
-- Error statistics
-- Filtered logs
-- Alerts
+- **Typical Inputs:** Application logs, web server logs (Nginx/Apache), security/firewall logs, CloudWatch logs, and structured JSON documents.
+- **Typical Outputs:** Sub-second search results, interactive dashboards, error statistics/graphs, filtered real-time log streams, and automated Slack/Email alerts.
 
 ---
 
@@ -36,65 +21,62 @@ OpenSearch indexes these logs and makes them searchable. It also provides dashbo
 
 ### Benefits
 
-- **Managed service:** AWS manages much of the infrastructure, which reduces operational work for the company.
-- **Fast search:** Logs and JSON documents are indexed, so searching is much faster than manually reading log files.
-- **Centralized observability:** Logs from different servers and applications can be analyzed in one place.
-- **Dashboards:** OpenSearch Dashboards can be used to visualize errors, traffic, latency or security events.
-- **AWS integration:** It can be integrated with services such as CloudWatch, S3, Lambda or Kinesis.
-- **Scalability:** The cluster can be adapted to the volume of data and the number of queries.
-- **Security features:** Access control, encryption and VPC deployment can be configured.
+- **Managed Service:** AWS handles infrastructure provisioning, software patching, failure recovery, and automated backups, which drastically reduces operational work for a small IT team.
+- **Sub-Second Search Latency:** Logs and JSON documents are indexed using an inverted index, meaning searching through millions of lines is far faster than manually reading or using `grep` on log files.
+- **Centralized Observability:** Logs from different servers, cloud services, and regions can be correlated and analyzed in one single place.
+- **Rich Dashboards:** OpenSearch Dashboards comes built-in to visualize errors, traffic trends, system latency, or security events for developers and business managers alike.
+- **AWS Integration:** Native integration with CloudWatch, S3, Kinesis, and Lambda.
 
 ### Limitations
 
-- Cost can increase quickly if the company stores too much data or keeps logs for too long.
-- Cluster sizing is not trivial: wrong instance types, too many shards or insufficient storage can reduce performance.
-- Vendor dependency: using the managed AWS service creates dependency on AWS infrastructure, pricing and service limits.
-- Production usage still requires monitoring, tuning and security configuration.
+- **No Scale-to-Zero:** Unlike serverless compute options, a managed OpenSearch cluster requires dedicated instances running 24/7. Even with zero traffic at night, you pay for the baseline infrastructure.
+- **Storage Cost and Retention:** Cost increases rapidly if the company stores too much raw data or keeps logs for too long without lifecycle management rules.
+- **Cluster Sizing Complexity:** Wrong instance types, too many shards, or insufficient storage can significantly reduce performance. Sizing requires experience.
+- **Vendor Dependency:** Relying on the managed AWS service creates a strong dependency on AWS infrastructure, pricing, and service limits — see Vendor Lock-in below.
 
 ---
 
 ## Cost structure
 
-**Amazon OpenSearch Service can be used in two main deployment models: managed clusters and serverless collections.**
+Amazon OpenSearch Service can be deployed in two main models: **Managed Clusters** (dedicated instances) and **Serverless Collections** (auto-scaling capacity).
 
-For managed clusters, the main cost components are:
+For a managed cluster, the main cost components are:
 
-- Instance hours: the compute instances used by the OpenSearch cluster.
-- Storage: EBS volumes used to store indexed data.
-- Data transfer: network traffic in and out of the service.
-- Snapshots and backups: storage used for backups.
-- Optional ingestion pipelines: if OpenSearch Ingestion is used to process and send data into OpenSearch.
+1. **Instance Hours:** Compute instances used by data nodes and cluster manager nodes.
+2. **Storage:** EBS volumes (gp3 SSD) used to store active indexed data.
+3. **Data Transfer:** Network traffic in/out of the service or across Availability Zones.
 
-For OpenSearch Serverless, the main cost components are:
+### Monthly cost example (Swiss SME scenario)
 
-- Compute capacity measured in OpenSearch Compute Units (OCUs).
-- Storage used by indexed data.
-- Ingestion and query capacity.
+- **Scenario:** 5 GB of raw logs per day, kept searchable for 30 days.
+- **Data estimate:** 5 GB/day x 30 days = 150 GB. With 1 replica: **300 GB total storage**.
+- **Cluster:** 2 x `t3.medium.search` nodes (2 vCPU, 4 GB RAM each), 150 GB gp3 per node.
 
-A cost estimate depends on: daily log volume, retention period, replication factor, number and type of nodes, storage size, query frequency.
+Region: **EU (Zurich)** — data stays in Switzerland (GDPR + Swiss nDSG compliance).  
+Configuration: 2 nodes, 2x 150 GB gp3 EBS, no dedicated master.
 
-### Monthly cost example
+| Scenario | Instance | USD/month | CHF/month |
+| --- | --- | --- | --- |
+| Dev / test | `t3.small.search` | $119.36 | ~107 CHF |
+| SME production | `t3.medium.search` | $186.52 | ~168 CHF |
 
-A Swiss SME produces approximately 5 GB of logs per day and wants to keep logs for 30 days.
+**Serverless alternative:** Starts at ~$700/month minimum due to always-on OCUs. Not cost-effective for small steady workloads.
 
-```text
-5 GB/day x 30 days = 150 GB raw
-+ indexing overhead + 1 replica = ~330 GB stored
-Provisioned: 400 GB EBS (gp3)
-```
+**Production setup** (3 master + 3 data nodes, 1 TB storage): **$600–900/month**.
 
-**Monthly cost (eu-west-1, managed cluster):**
+---
 
-| Component | Monthly cost |
-| --- | --- |
-| 2x `t3.small.search` instances | $52.56 |
-| 400 GB EBS storage (gp3) | $48.80 |
-| Snapshots (S3, ~20 GB) | $0.46 |
-| **Total** | **~$102/month** |
+## Vendor lock-in
 
-A production setup (3 master + 3 data nodes, 1 TB storage) costs **$600–900/month**.
+OpenSearch is open-source (Apache 2.0 license), so the query language and APIs are not proprietary. However, using Amazon OpenSearch Service still creates dependency on:
 
-OpenSearch Serverless starts at ~$700/month minimum due to always-on OCUs — not cost-effective for a small steady workload.
+- AWS IAM for authentication and access control.
+- AWS-specific ingestion pipelines (OpenSearch Ingestion, Kinesis).
+- CloudWatch integration and VPC networking configuration.
+
+**Migration risk:** Moving to a self-hosted cluster or another provider requires re-exporting data, reconfiguring pipelines, and adapting IAM policies — costly in time and money.
+
+**Recommendation:** The lock-in is acceptable for most Swiss SMEs given the operational savings. Consider self-hosting only if AWS costs become prohibitive or if data sovereignty regulations require it.
 
 ---
 
@@ -102,32 +84,23 @@ OpenSearch Serverless starts at ~$700/month minimum due to always-on OCUs — no
 
 ### Prerequisites
 
-To start using Amazon OpenSearch Service, the company needs:
-
-- an AWS account
-- IAM permissions to create and manage OpenSearch resources
-- basic knowledge of JSON and HTTP requests
-- a source of data, such as application logs or sample JSON documents
-- optional tools such as AWS CLI, curl, Postman or Python
-- for production: VPC, security groups, encryption and access control
+- An active AWS account with IAM permissions to create OpenSearch domains.
+- Docker and Docker Compose installed locally (for testing before cloud deployment).
+- A tool to send HTTP commands: `curl`, Postman, or the OpenSearch Dashboards Dev Tools console.
 
 ### Preparation steps
 
-1. Open the AWS Management Console.
-2. Go to Amazon OpenSearch Service.
-3. Create an OpenSearch domain or a serverless collection.
-4. Choose the deployment type: managed cluster for more control, or serverless for simplified capacity management.
-5. Configure network access: public for a test environment, VPC for production.
-6. Configure authentication and permissions.
-7. Create an index.
-8. Send a first JSON document.
-9. Run a search query.
-10. Open OpenSearch Dashboards to visualize the data.
-
 ```text
-AWS Console → OpenSearch Service → Create domain
-→ Network + permissions → Create index → Insert document
-→ Search → Dashboard
+AWS Console → Amazon OpenSearch Service → Create domain
+→ Configure Network/VPC → Configure Security/Auth
+→ Deploy cluster → Create index → Insert document → Search
+```
+
+For a local development environment:
+
+```bash
+docker compose up -d
+curl -k -u "admin:Admin@CLD2026!" https://localhost:9200
 ```
 
 ### Hello-world usage example
@@ -155,120 +128,79 @@ Search the document:
 GET /products/_search
 {
   "query": {
-    "match": {
-      "name": "chocolate"
-    }
+    "match": { "name": "chocolate" }
   }
 }
 ```
 
-OpenSearch returns the document where the field `name` matches the word `chocolate`.
+OpenSearch returns the document where the field `name` matches `chocolate`.
 
 ---
 
 ## Common commands / operations / configurations / usage patterns
 
-### Create an index
+OpenSearch relies on a RESTful API using JSON bodies. Below are the core commands for log analysis.
 
-An index is a logical place where documents are stored.
+### 1. Create a logs index with mappings
 
 ```bash
 PUT /logs
+{
+  "mappings": {
+    "properties": {
+      "timestamp":  { "type": "date" },
+      "level":      { "type": "keyword" },
+      "service":    { "type": "keyword" },
+      "statusCode": { "type": "integer" },
+      "message":    { "type": "text" }
+    }
+  }
+}
 ```
 
-This creates an index named `logs`.
-
----
-
-### Add a log document
-
-A log entry can be stored as a JSON document.
+### 2. Ingest a log document
 
 ```bash
 POST /logs/_doc
 {
   "timestamp": "2026-06-07T10:00:00Z",
   "level": "ERROR",
-  "service": "checkout",
+  "service": "checkout-backend",
   "statusCode": 504,
-  "message": "Payment service timeout"
+  "message": "Payment gateway timeout to PostFinance API"
 }
 ```
 
----
+### 3. Search all logs
 
-### Search all documents
+```bash
+GET /logs/_search
+{ "query": { "match_all": {} } }
+```
+
+### 4. Filter HTTP server errors (500+)
 
 ```bash
 GET /logs/_search
 {
   "query": {
-    "match_all": {}
+    "range": { "statusCode": { "gte": 500 } }
   }
 }
 ```
 
-This returns all documents from the `logs` index.
-
----
-
-### Search error logs
+### 5. Filter logs by time range
 
 ```bash
 GET /logs/_search
 {
   "query": {
-    "match": {
-      "level": "ERROR"
-    }
+    "range": { "timestamp": { "gte": "now-1h", "lte": "now" } }
   }
 }
 ```
 
-This returns log entries where the field `level` contains `ERROR`.
-
----
-
-### Filter logs by time range
-
-```bash
-GET /logs/_search
-{
-  "query": {
-    "range": {
-      "timestamp": {
-        "gte": "now-1h",
-        "lte": "now"
-      }
-    }
-  }
-}
-```
-
-This returns logs from the last hour.
-
----
-
-### Filter HTTP server errors
-
-```bash
-GET /logs/_search
-{
-  "query": {
-    "range": {
-      "statusCode": {
-        "gte": 500
-      }
-    }
-  }
-}
-```
-
-This returns HTTP server errors such as 500, 502, 503 or 504.
-
----
-
-### Aggregate errors by service
+### 6. Aggregate errors by service
 
 ```bash
 GET /logs/_search
@@ -276,28 +208,35 @@ GET /logs/_search
   "size": 0,
   "aggs": {
     "errors_by_service": {
-      "terms": {
-        "field": "service.keyword"
-      }
+      "terms": { "field": "service" }
     }
   }
 }
 ```
 
-This counts how many errors occurred for each service.
+---
+
+## When to use / when not to use
+
+**Use Amazon OpenSearch Service when:**
+
+- You need centralized log search across multiple services or servers.
+- You need full-text search on large volumes of JSON data.
+- You want dashboards and alerting without building them from scratch.
+- You are already on AWS and want native integration.
+
+**Do not use it when:**
+
+- You need a transactional database — use RDS or DynamoDB instead.
+- Your log volume is small and CloudWatch Logs Insights is sufficient.
+- You cannot justify the ~$100/month minimum for a small steady workload.
+- You need very low-latency key-value lookups — use ElastiCache instead.
 
 ---
 
-### Typical usage patterns
+## References
 
-Amazon OpenSearch Service is commonly used for:
-
-- centralized log search
-- application monitoring
-- security event analysis
-- full-text search
-- error investigation
-- dashboard creation
-- alerting on abnormal behavior
-- analyzing HTTP status codes and latency
-- troubleshooting distributed applications
+- [Amazon OpenSearch Service documentation](https://docs.aws.amazon.com/opensearch-service/)
+- [OpenSearch project (open-source)](https://opensearch.org/)
+- [AWS pricing page](https://aws.amazon.com/opensearch-service/pricing/)
+- [OpenSearch Dashboards guide](https://opensearch.org/docs/latest/dashboards/)

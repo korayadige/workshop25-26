@@ -8,7 +8,7 @@ Date: June 7, 2026
 
 ## Scenario
 
-A Swiss SME runs a small e-commerce web application on AWS (region: eu-west-1, Ireland).
+A Swiss SME runs a small e-commerce web application on AWS.
 The application produces logs from four components: web server, checkout service, payment service, and load balancer.
 
 **Assumptions:**
@@ -19,7 +19,7 @@ The application produces logs from four components: web server, checkout service
 | Retention period | 30 days |
 | Replication | 1 replica |
 | Deployment | Managed cluster (not serverless) |
-| Region | eu-west-1 (Ireland) |
+| Region | EU (Zurich) — data stays in Switzerland |
 
 ---
 
@@ -33,35 +33,36 @@ Replica copy (x1):                          x2
 Total storage needed:                      ~330 GB
 ```
 
-We provision **400 GB EBS (gp3)** to have some headroom.
+We provision **2x 150 GB EBS gp3** (one per node) = 300 GB total.
 
 ---
 
 ## Cluster sizing
 
-For a small SME with low-to-moderate query load, a minimal but functional cluster:
+For a small SME with low-to-moderate query load, a minimal but production-ready cluster:
 
 | Node | Type | Count | Purpose |
 | --- | --- | --- | --- |
-| Data nodes | `t3.small.search` | 2 | Store and query data |
+| Data nodes | `t3.medium.search` | 2 | Store and query data |
 | Dedicated master | none | 0 | Not needed below 10 nodes |
 
-> A single `t3.small.search` has 2 vCPU, 2 GB RAM — sufficient for 5 GB/day ingest at this scale.
+> A single `t3.medium.search` has 2 vCPU, 4 GB RAM — sufficient for 5 GB/day ingest and dashboard queries at this scale. `t3.small` (2 GB RAM) is too tight for concurrent search and indexing in practice.
 
 ---
 
-## Monthly cost breakdown (eu-west-1, June 2026)
+## Monthly cost breakdown (EU Zurich, June 2026)
 
-| Component | Calculation | Monthly cost |
-| --- | --- | --- |
-| Instance hours (2x t3.small.search) | 2 x $0.036/h x 730 h | **$52.56** |
-| EBS storage (400 GB gp3) | 400 GB x $0.122/GB | **$48.80** |
-| Snapshots in S3 (~20 GB) | 20 GB x $0.023/GB | **$0.46** |
-| Inbound data transfer | Free on AWS | **$0.00** |
-| OpenSearch Dashboards | Included | **$0.00** |
-| **Total** | | **~$102/month** |
+Region: **EU (Zurich)** — data stays in Switzerland, required for GDPR and Swiss nDSG compliance.  
+Configuration: 2 data nodes, 2x 150 GB gp3 EBS, no dedicated master, no UltraWarm.
 
-> Prices from the [AWS pricing page](https://aws.amazon.com/opensearch-service/pricing/) as of June 2026. Prices may vary.
+| Scenario | Instance | RAM | USD/month | CHF/month |
+| --- | --- | --- | --- | --- |
+| Dev / test | `t3.small.search` | 2 GB | **$119.36** | **~107 CHF** |
+| SME production | `t3.medium.search` | 4 GB | **$186.52** | **~168 CHF** |
+
+> Source: AWS Pricing Calculator, EU (Zurich), June 2026.
+
+**Why we chose `t3.medium.search`:** At 5 GB/day with concurrent log ingestion, search queries, and OpenSearch Dashboards running simultaneously, `t3.small.search` (2 GB RAM) is too tight. `t3.medium.search` (4 GB RAM) provides enough headroom for stable production use at an acceptable cost of ~168 CHF/month.
 
 ---
 
@@ -110,7 +111,7 @@ Cost is based on **OpenSearch Compute Units (OCUs)**:
 
 For a Swiss SME with ~5 GB/day log volume:
 
-- Use a **managed cluster** with 2 `t3.small.search` nodes — ~$100/month
+- Use a **managed cluster** with 2 `t3.medium.search` nodes in EU (Zurich) — ~168 CHF/month
 - Serverless is not cost-effective at this scale
 - Monitor storage monthly and adjust retention period to control cost
-- Avoid over-provisioning: start small, scale up when needed
+- Set index lifecycle management (ILM) rules to automatically delete old logs

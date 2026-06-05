@@ -44,12 +44,13 @@ Total time: 15 minutes + 3 minutes Q&A
 
 ### 4. Cost (2 min)
 
-- Scenario: 5 GB/day, 30-day retention, eu-west-1.
-- Managed cluster: 2x `t3.small.search` + 400 GB EBS = **~$102/month**.
+- Scenario: 5 GB/day, 30-day retention, EU (Zurich) — data stays in Switzerland.
+- Compared `t3.small.search` (2 GB RAM, $119/mo) vs `t3.medium.search` (4 GB RAM, $187/mo).
+- Chose `t3.medium.search`: 2 GB RAM is too tight for concurrent indexing + search + dashboards.
+- **Selected: 2x `t3.medium.search` + 2x 150 GB gp3 = $186.52/month (~168 CHF).**
 - Production-grade (HA): **$600–900/month**.
 - Serverless: minimum ~$700/month — not suitable for small steady workloads.
 - Key cost drivers: retention period, number of nodes, storage, replicas.
-- Recommendation: start small, monitor storage, adjust retention to control cost.
 
 ### 5. Vendor lock-in (1 min)
 
