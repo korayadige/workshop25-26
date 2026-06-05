@@ -1,0 +1,30 @@
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:01:12Z", "level": "INFO",  "service": "webserver",  "statusCode": 200, "method": "GET",  "path": "/products",        "responseTimeMs": 45,  "message": "Request handled successfully" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:03:45Z", "level": "INFO",  "service": "webserver",  "statusCode": 200, "method": "GET",  "path": "/cart",             "responseTimeMs": 62,  "message": "Request handled successfully" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:07:33Z", "level": "ERROR", "service": "checkout",   "statusCode": 500, "method": "POST", "path": "/checkout",         "responseTimeMs": 3021, "message": "Internal server error during payment processing" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:09:11Z", "level": "ERROR", "service": "payment",    "statusCode": 504, "method": "POST", "path": "/payment/charge",   "responseTimeMs": 30000, "message": "Payment service timeout" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:12:05Z", "level": "WARN",  "service": "webserver",  "statusCode": 404, "method": "GET",  "path": "/promo/old-deal",   "responseTimeMs": 12,  "message": "Page not found" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:15:44Z", "level": "INFO",  "service": "inventory",  "statusCode": 200, "method": "GET",  "path": "/stock/check",      "responseTimeMs": 88,  "message": "Stock level retrieved" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:18:22Z", "level": "ERROR", "service": "checkout",   "statusCode": 500, "method": "POST", "path": "/checkout",         "responseTimeMs": 2987, "message": "Database connection pool exhausted" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:21:09Z", "level": "INFO",  "service": "webserver",  "statusCode": 200, "method": "GET",  "path": "/products/42",      "responseTimeMs": 55,  "message": "Request handled successfully" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:24:30Z", "level": "ERROR", "service": "auth",       "statusCode": 503, "method": "POST", "path": "/auth/login",       "responseTimeMs": 15000, "message": "Auth service unavailable" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:27:17Z", "level": "INFO",  "service": "loadbalancer","statusCode": 200, "method": "GET",  "path": "/health",           "responseTimeMs": 3,   "message": "Health check passed" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:30:55Z", "level": "ERROR", "service": "payment",    "statusCode": 502, "method": "POST", "path": "/payment/refund",   "responseTimeMs": 8500, "message": "Bad gateway from upstream payment provider" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:33:40Z", "level": "WARN",  "service": "inventory",  "statusCode": 200, "method": "PUT",  "path": "/stock/update",     "responseTimeMs": 310, "message": "Stock update slow, DB load high" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:36:12Z", "level": "INFO",  "service": "webserver",  "statusCode": 200, "method": "POST", "path": "/orders",           "responseTimeMs": 134, "message": "Order created successfully" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:39:05Z", "level": "ERROR", "service": "checkout",   "statusCode": 500, "method": "POST", "path": "/checkout/confirm", "responseTimeMs": 4100, "message": "Unexpected null reference in order finalization" }
+{ "index": { "_index": "logs" } }
+{ "timestamp": "2026-06-07T08:42:18Z", "level": "INFO",  "service": "loadbalancer","statusCode": 200, "method": "GET",  "path": "/products",         "responseTimeMs": 49,  "message": "Request forwarded successfully" }
