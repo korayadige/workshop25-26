@@ -9,7 +9,7 @@ docker compose up -d
 ```
 
 Wait ~30 seconds, then open OpenSearch Dashboards at <http://localhost:5601>  
-Login: `admin` / `Admin@CLD2026!`
+No login required (security is disabled for the local demo).
 
 Create the index and load sample data via the Dev Tools console (Menu → Dev Tools):
 
