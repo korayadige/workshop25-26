@@ -8,7 +8,8 @@ Start the environment:
 docker compose up -d
 ```
 
-Wait ~30 seconds, then open OpenSearch Dashboards at <http://localhost:5601>  
+Wait ~30 seconds, then open the Dev Tools console directly at:  
+<http://localhost:5601/app/dev_tools#/console>  
 No login required (security is disabled for the local demo).
 
 Create the index and load sample data via the Dev Tools console (Menu → Dev Tools):
@@ -37,7 +38,7 @@ GET /logs/_search
 }
 ```
 
-Expected: returns all 15 log documents.
+Expected: `"total": { "value": 15 }` — all 15 documents found. OpenSearch returns the first 10 by default (pagination); the full count is visible in the response header.
 
 ---
 
