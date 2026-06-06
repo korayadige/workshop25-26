@@ -8,8 +8,7 @@ Start the environment:
 docker compose up -d
 ```
 
-Wait ~30 seconds, then open the Dev Tools console directly at:  
-<http://localhost:5601/app/dev_tools#/console>  
+Wait ~30 seconds, then open the Dev Tools console directly at:  <http://localhost:5601/app/dev_tools#/console>  
 No login required (security is disabled for the local demo).
 
 Create the index and load sample data via the Dev Tools console (Menu → Dev Tools):
