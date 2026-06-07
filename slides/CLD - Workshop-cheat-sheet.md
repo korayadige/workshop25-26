@@ -2,7 +2,7 @@
 
 
 Course: HEIG-VD CLD 2025/26  
-Authors: Koray Akgul,  Nathan Stampfli,  Zweifel Abram,    Victor Giordnani  
+Authors: Koray Akgul,  Nathan Stampfli,  Zweifel Abram,    Victor Giordani  
 Date: June 8, 2026
 
 
