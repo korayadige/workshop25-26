@@ -1,8 +1,8 @@
 # Amazon OpenSearch Service cheat sheet
 
-Course: HEIG-VD CLD 2025/26  
-Authors: Koray Akgul, Nathan Stampfli, Abram Zweifel, Victor Giordani  
-Date: June 7, 2026
+**Course:** HEIG-VD CLD 2025/26  
+**Authors:** Koray Akgul, Nathan Stampfli, Abram Zweifel, Victor Giordani  
+**Date:** June 8, 2026
 
 ## Why Amazon OpenSearch Service?
 
