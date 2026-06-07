@@ -62,7 +62,7 @@ Configuration: 2 nodes, 2x 150 GB gp3 EBS, no dedicated master.
 | Dev / test | `t3.small.search` | $119.36 | ~107 CHF |
 | SME production | `t3.medium.search` | $186.52 | ~168 CHF |
 
-**Serverless alternative (Next Generation — GA May 28, 2026):** AWS announced the next generation of OpenSearch Serverless with true Scale-to-Zero: the cluster scales down to 0 OCU when idle, eliminating the previous ~$700/month minimum. AWS claims up to 60% cost savings vs. over-provisioned managed clusters, with resource creation in seconds and 20× faster auto-scaling than the previous generation. However, Scale-to-Zero only helps when traffic drops to zero. For a Swiss SME with a continuous 24/7 log stream (5 GB/day), the managed cluster at ~168 CHF/month remains more predictable and cost-effective.
+**Serverless alternative (NextGen Collections):** While AWS OpenSearch Serverless historically required always-on compute nodes (costing a fixed minimum of ~$700/month), AWS introduced *NextGen Collections* on May 28, 2026. This architecture supports dynamic **Scale-to-Zero** by setting both `minIndexingCapacityInOCU` and `minSearchCapacityInOCU` to `0`. When the Swiss SME's e-commerce application is idle at night and no logs are ingested or searched, infrastructure compute costs automatically drop to zero. However, since a production environment typically generates a continuous, 24/7 steady log stream (5 GB/day), a Managed Cluster (`t3.medium.search`) remains more cost-effective and predictable for this specific workload than relying on serverless dynamic scaling.
 
 **Production setup** (3 master + 3 data nodes, 1 TB storage): **$600–900/month**.
 
