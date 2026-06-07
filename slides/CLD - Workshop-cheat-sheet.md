@@ -1,7 +1,7 @@
 # Amazon OpenSearch Service cheat sheet
 
 Course: HEIG-VD CLD 2025/26  
-Authors: Koray Akgul, Nathan Stampfli, Zweifel Abram, Victor Giordnai  
+Authors: Koray Akgul, Nathan Stampfli, Abram Zweifel, Victor Giordani  
 Date: June 7, 2026
 
 ## Why Amazon OpenSearch Service?
@@ -60,7 +60,7 @@ Configuration: 2 nodes, 2x 150 GB gp3 EBS, no dedicated master.
 | Dev / test | `t3.small.search` | $119.36 | ~107 CHF |
 | SME production | `t3.medium.search` | $186.52 | ~168 CHF |
 
-**Serverless alternative:** Starts at ~$700/month minimum due to always-on OCUs. Not cost-effective for small steady workloads.
+**Serverless alternative:** While AWS OpenSearch Serverless historically required always-on compute units (minimum ~700 USD/month), it now supports Scale-to-Zero. If configured, the cluster automatically scales down to 0 OCU (OpenSearch Compute Units) at night when no logs are ingested or queried, dropping the idle infrastructure cost to zero. However, for a Swiss SME with a continuous, 24/7 steady log stream (5 GB/day), the Managed Cluster remains more predictable and cost-effective..
 
 **Production setup** (3 master + 3 data nodes, 1 TB storage): **$600–900/month**.
 
