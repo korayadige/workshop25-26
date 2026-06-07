@@ -154,11 +154,12 @@ PUT /logs
 {
   "mappings": {
     "properties": {
-      "timestamp":  { "type": "date" },
-      "level":      { "type": "keyword" },
-      "service":    { "type": "keyword" },
-      "statusCode": { "type": "integer" },
-      "message":    { "type": "text" }
+      "timestamp":      { "type": "date" },
+      "level":          { "type": "text" },
+      "service":        { "type": "text" },
+      "statusCode":     { "type": "integer" },
+      "responseTimeMs": { "type": "integer" },
+      "message":        { "type": "text" }
     }
   }
 }
@@ -214,7 +215,7 @@ GET /logs/_search
   "size": 0,
   "aggs": {
     "errors_by_service": {
-      "terms": { "field": "service" }
+      "terms": { "field": "service.keyword" }
     }
   }
 }
