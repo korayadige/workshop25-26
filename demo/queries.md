@@ -8,20 +8,21 @@ Start the environment:
 docker compose up -d
 ```
 
-Wait ~30 seconds, then open the Dev Tools console directly at:  <http://localhost:5601/app/dev_tools#/console>  .
+Wait ~30 seconds, then open the Dev Tools console at <http://localhost:5601/app/dev_tools#/console>  
 No login required (security is disabled for the local demo).
 
-Create the index and load sample data via the Dev Tools console (Menu → Dev Tools):
+Create the index in Dev Tools:
 
 ```bash
 PUT /logs
 ```
 
-Then bulk-insert the sample logs:
+Then bulk-insert the sample logs from a terminal (run this from the `demo/` folder):
 
 ```bash
-POST /_bulk
-<paste content of sample-logs.json here>
+curl -s -X POST "http://localhost:9200/_bulk" \
+  -H "Content-Type: application/json" \
+  --data-binary @sample-logs.json
 ```
 
 ---
