@@ -1,8 +1,14 @@
 # Amazon OpenSearch Service cheat sheet
 
+<<<<<<< Updated upstream
 **Course:** HEIG-VD CLD 2025/26  
 **Authors:** Koray Akgul, Nathan Stampfli, Abram Zweifel, Victor Giordani  
 **Date:** June 8, 2026
+=======
+Course: HEIG-VD CLD 2025/26  
+Authors: Koray Akgul,  Nathan Stampfli,  Zweifel Abram,    Victor Giordnai  
+Date: June 7, 2026
+>>>>>>> Stashed changes
 
 ## Why Amazon OpenSearch Service?
 

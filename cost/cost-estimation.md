@@ -1,8 +1,8 @@
 # Cost estimation – Amazon OpenSearch Service
 
 Course: HEIG-VD CLD 2025/26  
-Authors: Koray Akgül, Nathan Stampfli  
-Date: June 7, 2026
+Authors: Koray Akgül, Nathan Stampfli  ,Abram Zweifel, Victor Giordani
+Date: June 8, 2026
 
 ---
 
