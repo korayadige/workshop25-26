@@ -114,18 +114,14 @@ Swiss SME:
 - 30-day retention
 - 150 GB stored
 
-Possible deployment:
-
-- 2 x t3.small.search nodes
-- 200 GB EBS storage
+Possible configuration: 2 nodes, 2 x 150 GB gp3 EBS, no dedicated master
 
 Estimated cost:
 
-≈ $50–100/month
+- Dev/Test (t3.small.search): ≈ 107 CHF/month
+- SME Production (t3.medium.search): ≈ 168 CHF/month
 
-Estimated raw log volume:
-
-(actual cost depends on region, traffic, retention and instance type)
+**Note:** This estimate assumes a managed cluster. Since May 2026, OpenSearch Serverless can scale to zero when idle, which may reduce costs for workloads with infrequent usage.
 
 ---
 
