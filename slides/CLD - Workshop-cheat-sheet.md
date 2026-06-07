@@ -31,7 +31,7 @@ OpenSearch solves this problem by collecting, parsing, and indexing these logs a
 
 ### Limitations
 
-- **No Scale-to-Zero:** Unlike serverless compute options, a managed OpenSearch cluster requires dedicated instances running 24/7. Even with zero traffic at night, you pay for the baseline infrastructure.
+- **No Scale-to-Zero (managed clusters):** A managed OpenSearch cluster requires dedicated instances running 24/7. Even with zero traffic at night, you pay for the baseline infrastructure. The new Serverless Next Generation (GA May 2026) does support Scale-to-Zero, but only helps when traffic genuinely drops to zero.
 - **Storage Cost and Retention:** Cost increases rapidly if the company stores too much raw data or keeps logs for too long without lifecycle management rules.
 - **Cluster Sizing Complexity:** Wrong instance types, too many shards, or insufficient storage can significantly reduce performance. Sizing requires experience.
 - **Vendor Dependency:** Relying on the managed AWS service creates a strong dependency on AWS infrastructure, pricing, and service limits — see Vendor Lock-in below.
@@ -211,7 +211,31 @@ GET /logs/_search
   "size": 0,
   "aggs": {
     "errors_by_service": {
-      "terms": { "field": "service.keyword" }
+      "filter": { "match": { "level": "ERROR" } },
+      "aggs": {
+        "by_service": {
+          "terms": { "field": "service.keyword" }
+        }
+      }
+    }
+  }
+}
+```
+
+### 7. Average response time per service
+
+```bash
+GET /logs/_search
+{
+  "size": 0,
+  "aggs": {
+    "avg_response_by_service": {
+      "terms": { "field": "service.keyword" },
+      "aggs": {
+        "avg_response": {
+          "avg": { "field": "responseTimeMs" }
+        }
+      }
     }
   }
 }
