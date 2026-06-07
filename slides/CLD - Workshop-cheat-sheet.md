@@ -8,7 +8,7 @@
 Course: HEIG-VD CLD 2025/26  
 Authors: Koray Akgul,  Nathan Stampfli,  Zweifel Abram,    Victor Giordnani  
 Date: June 8, 2026
->>>>>>> Stashed changes
+
 
 ## Why Amazon OpenSearch Service?
 
